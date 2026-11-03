@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: golden-mines-ai-website
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn web:app
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: worker
+    name: golden-mines-ai-telegram
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    autoDeploy: true
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
